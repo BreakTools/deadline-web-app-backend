@@ -32,7 +32,7 @@ WEB_SERVICE_PORT = getenv("WEB_SERVICE_PORT")
 
 @dataclass
 class jobs_data:
-    """Class for storing active jobs."""
+    """Class for storing jobs."""
 
     last_refresh: datetime
     jobs: dict
