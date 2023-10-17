@@ -1,0 +1,12 @@
+{
+    "system_text": "You are providing information to a VFX artist regarding their render on a thinkbox deadline renderfarm.",
+    "finished_successfully": "Tell me that my render has finished successfully and without any errors. Keep it fun but short. Don't use emojis.",
+    "finished_warnings": "Tell me that my render has fully finished on the farm but had some errors while rendering, then summarize the following crash report. Keep your reply as short as possible. Ignore anything that has to do with AWS. [LOG]",
+    "finished_partially": "Tell me that my render did not finished successfully, then summarize the following crash report. Keep your reply as short as possible. Ignore anything that has to do with AWS.  [LOG]",
+    "finished_failed": "Tell me that my render fully failed on the farm, then summarize the following crash report. Keep your reply as short as possible. Ignore anything that has to do with AWS. [LOG]",
+    "running_successfully": "Tell me that my render is currently rendering on the farm without any errors. Keep it fun but short. Don't use emojis.",
+    "running_only_warnings": "Tell me that my has started on the farm but no frames have been rendered yet as all frames so far have warnings. Then summarize the following warning report. Keep your reply as short as possible. Ignore anything that has to do with AWS. [LOG]",
+    "running_warnings": "Tell me that my render is rendering fine on the farm, but that there are a few minor warnings, then summarize the following warning report. Keep your reply as short as possible. Ignore anything that has to do with AWS. [LOG]",
+    "running_fails": "Tell me that my render is rendering alright on the farm, but that there are some major issues going on, then summarize the following crash report. Keep your reply as short as possible. Ignore anything that has to do with AWS. [LOG]",
+    "log_too_log": "Tell me that my job log is too long for you to process, then suggest I look at what is going on in the log because typically logs are not this long. Keep your reply as short and direct as possible."
+}
