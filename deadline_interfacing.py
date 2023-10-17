@@ -31,24 +31,8 @@ WEB_SERVICE_PORT = getenv("WEB_SERVICE_PORT")
 
 
 @dataclass
-class active_jobs_data:
+class jobs_data:
     """Class for storing active jobs."""
-
-    last_refresh: datetime
-    jobs: dict
-
-
-@dataclass
-class recent_jobs_data:
-    """Class for storing recent jobs."""
-
-    last_refresh: datetime
-    jobs: dict
-
-
-@dataclass
-class older_jobs_data:
-    """Class for storing older jobs."""
 
     last_refresh: datetime
     jobs: dict
@@ -64,15 +48,9 @@ class deadline_connection:
 
     async def set_initial_data(self) -> None:
         """This function sets the initial data when the class is initialized."""
-        self.active_jobs = active_jobs_data(
-            datetime.now(), await self.get_fresh_active_jobs()
-        )
-        self.recent_jobs = recent_jobs_data(
-            datetime.now(), await self.get_fresh_recent_jobs()
-        )
-        self.older_jobs = older_jobs_data(
-            datetime.now(), await self.get_fresh_older_jobs()
-        )
+        self.active_jobs = jobs_data(datetime.now(), await self.get_fresh_active_jobs())
+        self.recent_jobs = jobs_data(datetime.now(), await self.get_fresh_recent_jobs())
+        self.older_jobs = jobs_data(datetime.now(), await self.get_fresh_older_jobs())
         print("[BreakTools] Successfully fetched initial data")
 
     async def get_job_details_and_tasks(self, job_id: str) -> dict:
