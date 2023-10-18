@@ -19,6 +19,8 @@ This WebSocket backend...
 6. Make sure your computer has access to the files that are rendering on the farm, otherwise the image previews will not work. You're probably good if you're running this on a computer that also renders on the farm, but if you're running this in e.g. a docker container you might have to mount some folders to make it work.
 7. Start the backend by running `python launcher.py`.
 
+You might not be able to open a port to this backend if you're running your Deadline Web Service in a tightly controlled network. If that's the case but you do have access to a VPS that you can open ports to, have a look at my [WebSocket proxy scripts](https://github.com/BreakTools/websocket-proxy) to still make this backend work.
+
 That's it! I recommend putting this behind something like an NGINX reverse proxy with SSL so you can securely connect to it from your web browser.
 
 
