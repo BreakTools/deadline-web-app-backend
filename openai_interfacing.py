@@ -188,11 +188,37 @@ async def send_ai_text(prompt_type: str, prompt: str, job_id: str, websocket) ->
             ],
             stream=True,
         )
+
+        final_prompt = ""
+        async for chunk in response:
+            try:
+                await websocket.send(
+                    json.dumps(
+                        {
+                            "type": "ai_text",
+                            "job_id": job_id,
+                            "reset": False,
+                            "chunk": chunk.choices[0].delta.content,
+                        }
+                    )
+                )
+                final_prompt += chunk.choices[0].delta.content
+
+            except exceptions.ConnectionClosed:
+                return
+
+            except AttributeError:
+                pass
+
+        try:
+            GENERATED_PROMPTS[job_id][prompt_type] = final_prompt
+        except KeyError:
+            GENERATED_PROMPTS[job_id] = {}
+            GENERATED_PROMPTS[job_id][prompt_type] = final_prompt
+
     except openai.error.ServiceUnavailableError:
         response = "Error: OpenAI service couldn't be reached. Try reloading the page."
 
-    final_prompt = ""
-    async for chunk in response:
         try:
             await websocket.send(
                 json.dumps(
@@ -200,23 +226,13 @@ async def send_ai_text(prompt_type: str, prompt: str, job_id: str, websocket) ->
                         "type": "ai_text",
                         "job_id": job_id,
                         "reset": False,
-                        "chunk": chunk.choices[0].delta.content,
+                        "chunk": response,
                     }
                 )
             )
-            final_prompt += chunk.choices[0].delta.content
 
         except exceptions.ConnectionClosed:
             return
-
-        except AttributeError:
-            pass
-
-    try:
-        GENERATED_PROMPTS[job_id][prompt_type] = final_prompt
-    except KeyError:
-        GENERATED_PROMPTS[job_id] = {}
-        GENERATED_PROMPTS[job_id][prompt_type] = final_prompt
 
 
 async def fake_send_ai_text(prompt: str, job_id: str, websocket) -> None:
