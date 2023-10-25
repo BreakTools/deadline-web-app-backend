@@ -60,15 +60,19 @@ async def update_client_information(
                 )
 
                 if differences_to_send != {}:
-                    await websocket.send(
-                        json.dumps(
-                            {
-                                "type": "job_details",
-                                "data": differences_to_send,
-                                "update": True,
-                            }
+                    try:
+                        await websocket.send(
+                            json.dumps(
+                                {
+                                    "type": "job_details",
+                                    "data": differences_to_send,
+                                    "update": True,
+                                }
+                            )
                         )
-                    )
+                    except websockets.exceptions.ConnectionClosed:
+                        connection_data.connected = False
+                        return
 
                 # If error appears, rewrite AI text
                 if (
@@ -134,15 +138,19 @@ async def update_client_information(
                 )
 
                 if differences_to_send != {}:
-                    await websocket.send(
-                        json.dumps(
-                            {
-                                "type": data_type_to_send,
-                                "data": differences_to_send,
-                                "update": True,
-                            }
+                    try:
+                        await websocket.send(
+                            json.dumps(
+                                {
+                                    "type": data_type_to_send,
+                                    "data": differences_to_send,
+                                    "update": True,
+                                }
+                            )
                         )
-                    )
+                    except websockets.exceptions.ConnectionClosed:
+                        connection_data.connected = False
+                        return
 
                 connection_data.last_sent_data[
                     data_type_to_send

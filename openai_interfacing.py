@@ -173,20 +173,23 @@ async def send_ai_text(prompt_type: str, prompt: str, job_id: str, websocket) ->
     else:
         model = "gpt-3.5-turbo"
 
-    response = await openai.ChatCompletion.acreate(
-        model=model,
-        messages=[
-            {
-                "role": "system",
-                "content": prompts["system_text"],
-            },
-            {
-                "role": "user",
-                "content": prompt,
-            },
-        ],
-        stream=True,
-    )
+    try:
+        response = await openai.ChatCompletion.acreate(
+            model=model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": prompts["system_text"],
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                },
+            ],
+            stream=True,
+        )
+    except openai.error.ServiceUnavailableError:
+        response = "Error: OpenAI service couldn't be reached. Try reloading the page."
 
     final_prompt = ""
     async for chunk in response:
