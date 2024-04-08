@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from os import getenv
 
-import Deadline.DeadlineConnect as DeadlineConnect
+from DeadlineConnect import DeadlineCon
 from dotenv import load_dotenv
 
 from utility_functions import (
@@ -42,9 +42,7 @@ class deadline_connection:
     """This class handles everything related to the deadline web service.
     It stores job data in memory and has functions for requesting information."""
 
-    deadline_connection = DeadlineConnect.DeadlineCon(
-        WEB_SERVICE_IP_ADDRESS, WEB_SERVICE_PORT
-    )
+    deadline_connection = DeadlineCon(WEB_SERVICE_IP_ADDRESS, WEB_SERVICE_PORT)
 
     async def set_initial_data(self) -> None:
         """This function sets the initial data when the class is initialized."""
