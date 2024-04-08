@@ -28,7 +28,7 @@ docker build -t deadline-web-app-backend .
 6. Make sure your container has access to the files that are rendering on the farm, otherwise the image previews will not work. You might have to mount some folders to make it work.
 7. Run the backend.
 ```
-docker run -tty -p [port]:[port] deadline-web-app-backend
+docker run --tty -p [port]:[port] deadline-web-app-backend
 ```
 That's it! The backend is now running. I recommend putting this behind something like an NGINX reverse proxy with SSL so you can securely connect to it from your web browser.
 
