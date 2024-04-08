@@ -55,12 +55,7 @@ class deadline_connection:
 
     async def get_job_details_and_tasks(self, job_id: str) -> dict:
         """This function returns cleaned data from a single job."""
-
-        job_details = self.deadline_connection.Jobs.GetJobDetails(job_id)
-
-        # Deadline returns error messages as strings instead of raised exceptions,
-        # so if job_details is a string we know the job id is invalid.
-        if isinstance(job_details, str):
+        if not await self.check_if_job_exists(job_id):
             return {"type": "error", "error": "invalid_jobId"}
 
         job_details_and_tasks = {
@@ -199,3 +194,28 @@ class deadline_connection:
 
         else:
             return self.older_jobs.jobs
+
+    async def check_if_job_exists(self, job_id: str) -> bool:
+        """Checks the job_id against our jobs in storage so we make
+        sure the job actually exists before continuing.
+
+        Args:
+            job_id: The ID for the job
+
+        Returns:
+            If the job exists.
+        """
+        all_jobs = [
+            await self.get_active_jobs(),
+            await self.get_recent_jobs(),
+            await self.get_older_jobs(),
+        ]
+
+        for job_category in all_jobs:
+            try:
+                if job_category[job_id]:
+                    return True
+            except KeyError:
+                continue
+
+        return False

@@ -2,7 +2,6 @@
 OpenAI related functions for the Deadline Web App by Mervin van Brakel (2023)
 """
 
-
 import asyncio
 import json
 from os import getenv, path, sep
@@ -32,14 +31,17 @@ async def create_ai_text(
     then it runs the prompt through the send_ai_text function."""
     prompt_information = {}
 
-    total_chunks = (
-        int(job_details["job"]["Completed"])
-        + int(job_details["job"]["Failed"])
-        + int(job_details["job"]["Pending"])
-        + int(job_details["job"]["Queued"])
-        + int(job_details["job"]["Rendering"])
-        + int(job_details["job"]["Suspended"])
-    )
+    try:
+        total_chunks = (
+            int(job_details["job"]["Completed"])
+            + int(job_details["job"]["Failed"])
+            + int(job_details["job"]["Pending"])
+            + int(job_details["job"]["Queued"])
+            + int(job_details["job"]["Rendering"])
+            + int(job_details["job"]["Suspended"])
+        )
+    except KeyError:
+        return
 
     # Job finished without issues
     if (

@@ -15,9 +15,15 @@ from PIL import Image
 
 
 async def send_image_preview(
-    websocket, DEADLINE_CONNECTION, job_id: str, task_id: int
+    websocket, DEADLINE_CONNECTION, job_id: str, task_id: str
 ) -> None:
     """This function sends a Base64 JPEG image preview to a client."""
+    if not await DEADLINE_CONNECTION.check_if_job_exists(job_id):
+        return
+
+    if not task_id.isdigit():
+        return
+
     try:
         path_to_exr = await DEADLINE_CONNECTION.get_task_image_path(job_id, task_id)
     except KeyError:
