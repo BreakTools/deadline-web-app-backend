@@ -12,25 +12,15 @@ This WebSocket backend...
 
 ## Installation instructions (Docker)
 1. Make sure you have the Deadline Web Service running on your internal network. You can find the instructions for that [here](https://docs.thinkboxsoftware.com/products/deadline/10.1/1_User%20Manual/manual/web-service.html). Make sure you do NOT open the Deadline Web Service up to the public internet, as that's a big security risk.
-2. Clone this repository.
+2. Pull the image from the GitHub Package registry with:
 ```
-git clone https://github.com/BreakTools/deadline-web-app-backend
+docker pull ghcr.io/breaktools/deadline-web-app-backend
 ```
-3. Navigate into the deadline-web-app-backend directory.
+3. Run the backend with the following command, replacing the text in {curly brackets} with your own info.
 ```
-cd deadline-web-app-backend
+docker run -p {port}:1000 -e OPENAI_API_KEY="{yourkey}" -e WEB_SERVICE_IP="{webserviceip}" -e WEB_SERVICE_PORT="{webserviceport}" -t ghcr.io/breaktools/deadline-web-app-backend
 ```
-4. Open `.env` and set the required environment variables.
-5. Build the Docker container.
-```
-docker build -t deadline-web-app-backend .
-```
-6. Make sure your container has access to the files that are rendering on the farm, otherwise the image previews will not work. You might have to mount some folders to make it work.
-7. Run the backend.
-```
-docker run --tty -p [port]:[port] deadline-web-app-backend
-```
-That's it! The backend is now running. I recommend putting this behind something like an NGINX reverse proxy with SSL so you can securely connect to it from your web browser.
+That's it! The backend is now running. You will probably have to do some additional configuration to get the image previews to work properly, such as mounting the folders your farm renders to. I recommend putting this behind something like an NGINX reverse proxy with SSL so you can securely connect to it from your web browser.
 
 
 ## Installation instructions (Standalone)
