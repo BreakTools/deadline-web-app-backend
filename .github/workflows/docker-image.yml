@@ -2,8 +2,8 @@ name: Package publish
 
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - main
   pull_request:
 env:
   IMAGE_NAME: deadline-web-app-backend
