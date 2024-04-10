@@ -274,6 +274,6 @@ async def start_websocket_server() -> None:
 
     await DEADLINE_CONNECTION.set_initial_data()
 
-    async with websockets.serve(websocket_connection_handler, "", 1000):
+    async with websockets.serve(websocket_connection_handler, "", 80):
         print("[BreakTools] Started WebSocket server.")
         await asyncio.Future()

@@ -1,27 +1,34 @@
 # Deadline Web App Backend
+
 This is the Python WebSocket backend for my [Deadline Web App frontend](https://github.com/BreakTools/deadline-web-app-frontend)! You can witness this in action by visiting [my school's monitor](https://monitor.breaktools.info/).
 
 ## Features
+
 This WebSocket backend...
-- ...retrieves job information from the Deadline Web Service, stores it in memory and sends the data to clients that request it. 
+
+- ...retrieves job information from the Deadline Web Service, stores it in memory and sends the data to clients that request it.
 - ...keeps connected clients in the loop by sending them updates whenever job information on the render farm changes.
 - ...uses ChatGPT to parse error logs and provides an easy to read summary for artists.
 - ...retrieves EXRs from disk and converts them to JPEGs so artists can preview their renders.
-  
+
 **Warning: This backend does not have authentication, so please don't open it to the public if you are dealing with NDAs.**
 
 ## Installation instructions (Docker)
+
 1. Make sure you have the Deadline Web Service running on your internal network. You can find the instructions for that [here](https://docs.thinkboxsoftware.com/products/deadline/10.1/1_User%20Manual/manual/web-service.html). Make sure you do NOT open the Deadline Web Service up to the public internet, as that's a big security risk.
 2. Pull the image from the GitHub Package registry with:
+
 ```
 docker pull ghcr.io/breaktools/deadline-web-app-backend
 ```
-3. Run the backend with the following command, replacing the text in {curly brackets} with your own info.
-```
-docker run -p {port}:1000 -e OPENAI_API_KEY="{yourkey}" -e WEB_SERVICE_IP="{webserviceip}" -e WEB_SERVICE_PORT="{webserviceport}" -t ghcr.io/breaktools/deadline-web-app-backend
-```
-That's it! The backend is now running. You will probably have to do some additional configuration to get the image previews to work properly, such as mounting the folders your farm renders to. I recommend putting this behind something like an NGINX reverse proxy with SSL so you can securely connect to it from your web browser.
 
+3. Run the backend with the following command, replacing the text in {curly brackets} with your own info.
+
+```
+docker run -p {port}:80 -e OPENAI_API_KEY="{yourkey}" -e WEB_SERVICE_IP="{webserviceip}" -e WEB_SERVICE_PORT="{webserviceport}" -t ghcr.io/breaktools/deadline-web-app-backend
+```
+
+That's it! The backend is now running. You will probably have to do some additional configuration to get the image previews to work properly, such as mounting the folders your farm renders to. I recommend putting this behind something like an NGINX reverse proxy with SSL so you can securely connect to it from your web browser.
 
 ## Installation instructions (Standalone)
 
@@ -35,5 +42,3 @@ That's it! The backend is now running. You will probably have to do some additio
 You might not be able to open a port to this backend if you're running your Deadline Web Service in a tightly controlled network. If that's the case but you do have access to a VPS that you can open ports to, have a look at my [WebSocket proxy scripts](https://github.com/BreakTools/websocket-proxy) to still make this backend work.
 
 That's it! I recommend putting this behind something like an NGINX reverse proxy with SSL so you can securely connect to it from your web browser.
-
-
