@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  deadline-web-app-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "1000:1000" 
+    environment:
+        OPENAI_API_KEY: 
+        WEB_SERVICE_IP: 
+        WEB_SERVICE_PORT: 

@@ -48,10 +48,10 @@ async def update_client_information(
     while connection_data.connected:
         if connection_data.looking_at_job:
             if "error" not in connection_data.last_sent_data["job_details"]:
-                connection_data.data_to_send[
-                    "job_details"
-                ] = await DEADLINE_CONNECTION.get_job_details_and_tasks(
-                    connection_data.job_id
+                connection_data.data_to_send["job_details"] = (
+                    await DEADLINE_CONNECTION.get_job_details_and_tasks(
+                        connection_data.job_id
+                    )
                 )
 
                 differences_to_send = get_dict_differences(
@@ -110,9 +110,9 @@ async def update_client_information(
                         )
                     )
 
-                connection_data.last_sent_data[
-                    "job_details"
-                ] = connection_data.data_to_send["job_details"]
+                connection_data.last_sent_data["job_details"] = (
+                    connection_data.data_to_send["job_details"]
+                )
 
             await asyncio.sleep(1)
 
@@ -120,17 +120,17 @@ async def update_client_information(
             for data_type_to_send in connection_data.subscribed_updates:
                 match data_type_to_send:
                     case "active_jobs":
-                        connection_data.data_to_send[
-                            data_type_to_send
-                        ] = await DEADLINE_CONNECTION.get_active_jobs()
+                        connection_data.data_to_send[data_type_to_send] = (
+                            await DEADLINE_CONNECTION.get_active_jobs()
+                        )
                     case "recent_jobs":
-                        connection_data.data_to_send[
-                            data_type_to_send
-                        ] = await DEADLINE_CONNECTION.get_recent_jobs()
+                        connection_data.data_to_send[data_type_to_send] = (
+                            await DEADLINE_CONNECTION.get_recent_jobs()
+                        )
                     case "older_jobs":
-                        connection_data.data_to_send[
-                            data_type_to_send
-                        ] = await DEADLINE_CONNECTION.get_older_jobs()
+                        connection_data.data_to_send[data_type_to_send] = (
+                            await DEADLINE_CONNECTION.get_older_jobs()
+                        )
 
                 differences_to_send = get_dict_differences(
                     connection_data.last_sent_data[data_type_to_send],
@@ -152,9 +152,9 @@ async def update_client_information(
                         connection_data.connected = False
                         return
 
-                connection_data.last_sent_data[
-                    data_type_to_send
-                ] = connection_data.data_to_send[data_type_to_send]
+                connection_data.last_sent_data[data_type_to_send] = (
+                    connection_data.data_to_send[data_type_to_send]
+                )
 
             await asyncio.sleep(3)
 
@@ -181,25 +181,25 @@ async def websocket_connection_handler(websocket):
                     connection_data.looking_at_job = False
                     connection_data.subscribed_updates.append("active_jobs")
                     connection_data.data_type_to_send = "active_jobs"
-                    connection_data.data_to_send[
-                        "active_jobs"
-                    ] = await DEADLINE_CONNECTION.get_active_jobs()
+                    connection_data.data_to_send["active_jobs"] = (
+                        await DEADLINE_CONNECTION.get_active_jobs()
+                    )
 
                 case "get_recent_jobs":
                     connection_data.looking_at_job = False
                     connection_data.subscribed_updates.append("recent_jobs")
                     connection_data.data_type_to_send = "recent_jobs"
-                    connection_data.data_to_send[
-                        "recent_jobs"
-                    ] = await DEADLINE_CONNECTION.get_recent_jobs()
+                    connection_data.data_to_send["recent_jobs"] = (
+                        await DEADLINE_CONNECTION.get_recent_jobs()
+                    )
 
                 case "get_older_jobs":
                     connection_data.looking_at_job = False
                     connection_data.subscribed_updates.append("older_jobs")
                     connection_data.data_type_to_send = "older_jobs"
-                    connection_data.data_to_send[
-                        "older_jobs"
-                    ] = await DEADLINE_CONNECTION.get_older_jobs()
+                    connection_data.data_to_send["older_jobs"] = (
+                        await DEADLINE_CONNECTION.get_older_jobs()
+                    )
 
                 case "get_job_details":
                     connection_data.looking_at_job = True
@@ -208,10 +208,10 @@ async def websocket_connection_handler(websocket):
                     if parsed_message["jobId"] != "undefined":
                         connection_data.job_id = parsed_message["jobId"]
                         connection_data.data_type_to_send = "job_details"
-                        connection_data.data_to_send[
-                            "job_details"
-                        ] = await DEADLINE_CONNECTION.get_job_details_and_tasks(
-                            parsed_message["jobId"]
+                        connection_data.data_to_send["job_details"] = (
+                            await DEADLINE_CONNECTION.get_job_details_and_tasks(
+                                parsed_message["jobId"]
+                            )
                         )
 
                 case "get_image_preview":
@@ -247,9 +247,9 @@ async def websocket_connection_handler(websocket):
                 connection_data.connected = False
                 return
 
-            connection_data.last_sent_data[
-                connection_data.data_type_to_send
-            ] = connection_data.data_to_send[connection_data.data_type_to_send]
+            connection_data.last_sent_data[connection_data.data_type_to_send] = (
+                connection_data.data_to_send[connection_data.data_type_to_send]
+            )
 
             if connection_data.data_type_to_send == "job_details":
                 asyncio.create_task(
@@ -274,10 +274,6 @@ async def start_websocket_server() -> None:
 
     await DEADLINE_CONNECTION.set_initial_data()
 
-    async with websockets.serve(
-        websocket_connection_handler, "", getenv("WEBSOCKET_PORT")
-    ):
-        print(
-            f"[BreakTools] Started WebSocket server on port {getenv('WEBSOCKET_PORT')}"
-        )
+    async with websockets.serve(websocket_connection_handler, "", 1000):
+        print("[BreakTools] Started WebSocket server.")
         await asyncio.Future()

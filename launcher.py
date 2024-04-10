@@ -29,12 +29,6 @@ def all_variables_set() -> bool:
     can_run = True
 
     if not check_or_ask_for_env(
-        "WEBSOCKET_PORT",
-        "Your WebSocket environment variable is not set. Please set it.",
-    ):
-        can_run = False
-
-    if not check_or_ask_for_env(
         "WEB_SERVICE_IP",
         "Your Deadline web service IP environment variable is not set. Please set it.",
     ):
@@ -42,7 +36,7 @@ def all_variables_set() -> bool:
 
     if not check_or_ask_for_env(
         "WEB_SERVICE_PORT",
-        "Your Deadline web server port enviroment variable is not set. Please set it.",
+        "Your Deadline web server port environment variable is not set. Please set it.",
     ):
         can_run = False
     if not check_or_ask_for_env(
