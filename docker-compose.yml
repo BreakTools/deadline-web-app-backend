@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "1000:1000" 
+      - "1000:80" 
     environment:
         OPENAI_API_KEY: 
         WEB_SERVICE_IP: 
