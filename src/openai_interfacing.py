@@ -167,13 +167,9 @@ async def send_ai_text(prompt_type: str, prompt: str, job_id: str, websocket) ->
 
     prompt_length = await get_token_size(prompt)
 
-    if 4000 < prompt_length < 16000:
-        model = "gpt-3.5-turbo-16k-0613"
-    elif prompt_length > 16000:
-        model = "gpt-3.5-turbo"
+    model = "gpt-4o-mini"
+    if prompt_length > 128000:
         prompt = prompts["log_too_log"]
-    else:
-        model = "gpt-3.5-turbo"
 
     try:
         response = await openai.ChatCompletion.acreate(
