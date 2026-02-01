@@ -1,6 +1,6 @@
 # Deadline Web App Backend
 
-This is the Python WebSocket backend for my [Deadline Web App frontend](https://github.com/BreakTools/deadline-web-app-frontend)! You can witness this in action by visiting [my school's monitor](https://monitor.vfxim.nl/).
+This is the Python WebSocket backend for my [Deadline Web App frontend](https://github.com/BreakTools/deadline-web-app-frontend)!
 
 ## Features
 
